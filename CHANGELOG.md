@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+* Improve rendering speed
+
 ## 2.0.0
 
 * Migrate to nullsafety
