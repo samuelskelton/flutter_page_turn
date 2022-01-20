@@ -1,4 +1,7 @@
 # Changelog
+## 2.0.2
+
+* Fix throw error on release mode
 
 ## 2.0.1
 
