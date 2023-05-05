@@ -7,7 +7,7 @@ class PageTurnImage extends StatefulWidget {
     Key? key,
     required this.amount,
     required this.image,
-    this.backgroundColor = const Color(0xFFFFFFCC),
+    this.backgroundColor = Colors.transparent,
   }) : super(key: key);
 
   final Animation<double> amount;

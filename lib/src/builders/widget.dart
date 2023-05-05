@@ -10,7 +10,7 @@ class PageTurnWidget extends StatefulWidget {
   const PageTurnWidget({
     Key? key,
     required this.amount,
-    this.backgroundColor = const Color(0xFFFFFFCC),
+    this.backgroundColor = Colors.transparent,
     required this.child,
   }) : super(key: key);
 

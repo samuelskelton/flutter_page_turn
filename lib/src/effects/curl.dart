@@ -50,21 +50,21 @@ class PageTurnEffect extends CustomPainter {
     final w = size.width.toDouble();
     final h = size.height.toDouble();
     final c = canvas;
-    final shadowXf = (wHRatio - movX);
-    final shadowSigma =
-        Shadow.convertRadiusToSigma(8.0 + (32.0 * (1.0 - shadowXf)));
-    final pageRect = Rect.fromLTRB(0.0, 0.0, w * shadowXf, h);
-    if (backgroundColor != null) {
-      c.drawRect(pageRect, Paint()..color = backgroundColor!);
-    }
-    if (pos != 0) {
-      c.drawRect(
-        pageRect,
-        Paint()
-          ..color = Colors.black54
-          ..maskFilter = MaskFilter.blur(BlurStyle.outer, shadowSigma),
-      );
-    }
+    // final shadowXf = (wHRatio - movX);
+    // final shadowSigma =
+    //     Shadow.convertRadiusToSigma(8.0 + (32.0 * (1.0 - shadowXf)));
+    // final pageRect = Rect.fromLTRB(0.0, 0.0, w, h);
+    // if (backgroundColor != null) {
+    //   c.drawRect(pageRect, Paint()..color = backgroundColor!);
+    // }
+    // if (pos != 0) {
+    //   c.drawRect(
+    //     pageRect,
+    //     Paint()
+    //       ..color = Colors.black54
+    //       ..maskFilter = MaskFilter.blur(BlurStyle.outer, shadowSigma),
+    //   );
+    // }
 
     final ip = Paint();
     for (double x = 0; x < size.width; x++) {
