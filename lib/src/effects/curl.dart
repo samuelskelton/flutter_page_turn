@@ -50,6 +50,7 @@ class PageTurnEffect extends CustomPainter {
     final w = size.width.toDouble();
     final h = size.height.toDouble();
     final c = canvas;
+    // Uncomment to reintroduce shadow:
     // final shadowXf = (wHRatio - movX);
     // final shadowSigma =
     //     Shadow.convertRadiusToSigma(8.0 + (32.0 * (1.0 - shadowXf)));

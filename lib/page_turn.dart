@@ -6,7 +6,7 @@ class PageTurn extends StatefulWidget {
     Key? key,
     this.duration = const Duration(milliseconds: 450),
     this.cutoff = 0.6,
-    this.backgroundColor = const Color(0xFFFFFFCC),
+    this.backgroundColor = Colors.transparent,
     this.children = const [],
     this.initialIndex = 0,
     this.lastPage,
@@ -160,6 +160,7 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: LayoutBuilder(
         builder: (context, dimens) => GestureDetector(
           behavior: HitTestBehavior.opaque,
