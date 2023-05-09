@@ -11,6 +11,8 @@ class PageTurn extends StatefulWidget {
     this.initialIndex = 0,
     this.lastPage,
     this.showDragCutoff = false,
+    required this.onPageForward,
+    required this.onPageBack,
   }) : super(key: key);
 
   final Color backgroundColor;
@@ -20,6 +22,8 @@ class PageTurn extends StatefulWidget {
   final Widget? lastPage;
   final bool showDragCutoff;
   final double cutoff;
+  final ValueChanged<int> onPageForward;
+  final ValueChanged<int> onPageBack;
 
   @override
   PageTurnState createState() => PageTurnState();
@@ -31,6 +35,8 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
 
   List<AnimationController> _controllers = [];
   bool? _isForward;
+  ValueChanged<int> _onPageForward = (value) {};
+  ValueChanged<int> _onPageBack = (value) {};
 
   @override
   void didUpdateWidget(PageTurn oldWidget) {
@@ -79,6 +85,8 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
     }
     pages = pages.reversed.toList();
     pageNumber = widget.initialIndex;
+    _onPageForward = widget.onPageForward;
+    _onPageBack = widget.onPageBack;
   }
 
   bool get _isLastPage => pages.length - 1 == pageNumber;
@@ -104,20 +112,26 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
   Future<void> _onDragFinish() async {
     if (_isForward != null) {
       if (_isForward!) {
-        if (!_isLastPage && _controllers[pageNumber].value <= (widget.cutoff + 0.15)) {
+        if (!_isLastPage &&
+            _controllers[pageNumber].value <= (widget.cutoff + 0.15)) {
           await nextPage();
         } else {
           await _controllers[pageNumber].forward();
+          _onPageForward(pageNumber);
         }
       } else if (pageNumber > 0) {
-        print('Val:${_controllers[pageNumber - 1].value} -> ${widget.cutoff + 0.28}');
-        if (!_isFirstPage && _controllers[pageNumber - 1].value >= widget.cutoff) {
+        print(
+            'Val:${_controllers[pageNumber - 1].value} -> ${widget.cutoff + 0.28}');
+        if (!_isFirstPage &&
+            _controllers[pageNumber - 1].value >= widget.cutoff) {
           await previousPage();
         } else {
           if (_isFirstPage) {
             await _controllers[pageNumber].forward();
+            _onPageBack(pageNumber);
           } else {
             await _controllers[pageNumber - 1].reverse();
+            _onPageBack(pageNumber);
           }
         }
       }
@@ -130,6 +144,7 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
     if (mounted)
       setState(() {
         pageNumber++;
+        _onPageForward(pageNumber);
       });
   }
 
@@ -138,6 +153,7 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
     if (mounted)
       setState(() {
         pageNumber--;
+        _onPageBack(pageNumber);
       });
   }
 
@@ -152,7 +168,8 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
       } else if (i < index) {
         _controllers[i].reverse();
       } else {
-        if (_controllers[i].status == AnimationStatus.reverse) _controllers[i].value = 1;
+        if (_controllers[i].status == AnimationStatus.reverse)
+          _controllers[i].value = 1;
       }
     }
   }
@@ -179,7 +196,9 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
                     Flexible(
                       flex: (widget.cutoff * 10).round(),
                       child: Container(
-                        color: widget.showDragCutoff ? Colors.blue.withAlpha(100) : null,
+                        color: widget.showDragCutoff
+                            ? Colors.blue.withAlpha(100)
+                            : null,
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: _isFirstPage ? null : previousPage,
@@ -189,7 +208,9 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
                     Flexible(
                       flex: 10 - (widget.cutoff * 10).round(),
                       child: Container(
-                        color: widget.showDragCutoff ? Colors.red.withAlpha(100) : null,
+                        color: widget.showDragCutoff
+                            ? Colors.red.withAlpha(100)
+                            : null,
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: _isLastPage ? null : nextPage,
