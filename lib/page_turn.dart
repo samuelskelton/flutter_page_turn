@@ -11,8 +11,7 @@ class PageTurn extends StatefulWidget {
     this.initialIndex = 0,
     this.lastPage,
     this.showDragCutoff = false,
-    required this.onPageForward,
-    required this.onPageBack,
+    required this.pageNotifier,
   }) : super(key: key);
 
   final Color backgroundColor;
@@ -22,21 +21,25 @@ class PageTurn extends StatefulWidget {
   final Widget? lastPage;
   final bool showDragCutoff;
   final double cutoff;
-  final ValueChanged<int> onPageForward;
-  final ValueChanged<int> onPageBack;
+  final ValueNotifier<int> pageNotifier;
 
   @override
   PageTurnState createState() => PageTurnState();
 }
 
 class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
-  int pageNumber = 0;
+  int _pageNumber = 0;
+  int get pageNumber => _pageNumber;
+  set pageNumber(int index) {
+    _pageNumber = index;
+    pageNotifier.value = index;
+  }
+
   List<Widget> pages = [];
 
   List<AnimationController> _controllers = [];
   bool? _isForward;
-  ValueChanged<int> _onPageForward = (value) {};
-  ValueChanged<int> _onPageBack = (value) {};
+  ValueNotifier pageNotifier = ValueNotifier<int>(0);
 
   @override
   void didUpdateWidget(PageTurn oldWidget) {
@@ -85,8 +88,7 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
     }
     pages = pages.reversed.toList();
     pageNumber = widget.initialIndex;
-    _onPageForward = widget.onPageForward;
-    _onPageBack = widget.onPageBack;
+    pageNotifier = widget.pageNotifier;
   }
 
   bool get _isLastPage => pages.length - 1 == pageNumber;
@@ -117,7 +119,6 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
           await nextPage();
         } else {
           await _controllers[pageNumber].forward();
-          _onPageForward(pageNumber);
         }
       } else if (pageNumber > 0) {
         print(
@@ -128,10 +129,10 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
         } else {
           if (_isFirstPage) {
             await _controllers[pageNumber].forward();
-            _onPageBack(pageNumber);
+            // pageNotifier.value--;
           } else {
             await _controllers[pageNumber - 1].reverse();
-            _onPageBack(pageNumber);
+            // pageNotifier.value--;
           }
         }
       }
@@ -144,7 +145,7 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
     if (mounted)
       setState(() {
         pageNumber++;
-        _onPageForward(pageNumber);
+        // pageNotifier.value++;
       });
   }
 
@@ -153,7 +154,7 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
     if (mounted)
       setState(() {
         pageNumber--;
-        _onPageBack(pageNumber);
+        // pageNotifier.value--;
       });
   }
 
