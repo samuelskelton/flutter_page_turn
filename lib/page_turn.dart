@@ -121,8 +121,6 @@ class PageTurnState extends State<PageTurn> with TickerProviderStateMixin {
           await _controllers[pageNumber].forward();
         }
       } else if (pageNumber > 0) {
-        print(
-            'Val:${_controllers[pageNumber - 1].value} -> ${widget.cutoff + 0.28}');
         if (!_isFirstPage &&
             _controllers[pageNumber - 1].value >= widget.cutoff) {
           await previousPage();

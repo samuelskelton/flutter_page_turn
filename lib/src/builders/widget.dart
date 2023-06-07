@@ -35,7 +35,7 @@ class _PageTurnWidgetState extends State<PageTurnWidget> {
   }
 
   void _captureImage([Duration? timeStamp]) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 7));
 
     RenderObject? boundary = _boundaryKey.currentContext?.findRenderObject();
     if (boundary is RenderRepaintBoundary) {
@@ -56,7 +56,8 @@ class _PageTurnWidgetState extends State<PageTurnWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_image == null) WidgetsBinding.instance?.addPostFrameCallback(_captureImage);
+    if (_image == null)
+      WidgetsBinding.instance?.addPostFrameCallback(_captureImage);
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final size = constraints.biggest;
@@ -85,6 +86,28 @@ class _PageTurnWidgetState extends State<PageTurnWidget> {
   }
 
   Widget buildPage() {
+    // return TweenAnimationBuilder(
+    //   tween: IntTween(begin: 0, end: 1),
+    //   duration: const Duration(milliseconds: 300),
+    //   child: CustomPaint(
+    //     painter: PageTurnEffect(
+    //       amount: widget.amount,
+    //       image: _image!,
+    //       backgroundColor: widget.backgroundColor,
+    //     ),
+    //     size: Size.infinite,
+    //   ),
+    //   builder: (BuildContext context, int value, Widget? child) {
+    //     return Container(
+    //       color: widget.backgroundColor,
+    //       child: AnimatedOpacity(
+    //         duration: const Duration(milliseconds: 300),
+    //         opacity: value.toDouble(),
+    //         child: child,
+    //       ),
+    //     );
+    //   },
+    // );
     return TweenAnimationBuilder(
       tween: IntTween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 300),
@@ -98,12 +121,7 @@ class _PageTurnWidgetState extends State<PageTurnWidget> {
       ),
       builder: (BuildContext context, int value, Widget? child) {
         return Container(
-          color: widget.backgroundColor,
-          child: AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
-            opacity: value.toDouble(),
-            child: child,
-          ),
+          child: child,
         );
       },
     );
