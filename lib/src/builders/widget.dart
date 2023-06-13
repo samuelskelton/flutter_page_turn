@@ -86,28 +86,6 @@ class _PageTurnWidgetState extends State<PageTurnWidget> {
   }
 
   Widget buildPage() {
-    // return TweenAnimationBuilder(
-    //   tween: IntTween(begin: 0, end: 1),
-    //   duration: const Duration(milliseconds: 300),
-    //   child: CustomPaint(
-    //     painter: PageTurnEffect(
-    //       amount: widget.amount,
-    //       image: _image!,
-    //       backgroundColor: widget.backgroundColor,
-    //     ),
-    //     size: Size.infinite,
-    //   ),
-    //   builder: (BuildContext context, int value, Widget? child) {
-    //     return Container(
-    //       color: widget.backgroundColor,
-    //       child: AnimatedOpacity(
-    //         duration: const Duration(milliseconds: 300),
-    //         opacity: value.toDouble(),
-    //         child: child,
-    //       ),
-    //     );
-    //   },
-    // );
     return TweenAnimationBuilder(
       tween: IntTween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 300),
